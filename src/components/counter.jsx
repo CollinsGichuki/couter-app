@@ -17,7 +17,9 @@ class Counter extends Component {
   //Using an arrow function achieves the same with less effort.
   //Arrow functions don't bind this keyword
   handleIncrement = () => {
-    console.log("Increment clicked", this)
+     //setState tells React we are updating the state 
+     //and it will figure out which part of the state we are updating and bring the DOM in sync with the virtual sync
+     this.setState({count: this.state.count +1})
   }
 
   render() { 
