@@ -3,29 +3,39 @@ import React, { Component } from 'react';
 class Counter extends Component {
   state = {
     count: 0,
-    imageUrl : 'https://picsum.photos/200',
-    tags: ['tag1', 'tag2', 'tag3', 'tag4']
+    tags: []
   };
+
+  // constructor() {
+  //   //We need to call the constructor of the super class(Compnent) in tderived class before accessing this(Couter)
+  //   super();
+  //   //Functions in JavaScript are objects and hence methods can be called on them
+  //   //bind will return a new instance of handleIncrement which will have this referencing the current Counter object
+  //   this.handleIncrement = this.handleIncrement.bind(this)
+  // }
+
+  //Using an arrow function achieves the same with less effort.
+  //Arrow functions don't bind this keyword
+  handleIncrement = () => {
+    console.log("Increment clicked", this)
+  }
 
   render() { 
     return(
     <div>
-      <img src={this.state.imageUrl} alt=""/>
-      <span className={ this.getBadgeClasses()}>{this.formatCount()}</span>
-      <button className="btn btn-secondary btn-sm">Increment</button>
-      <ul>
-        //The List needs a key for every item 
-        { this.state.tags.map(tag => <li key={tag}>{ tag }</li>)}
-      </ul>
+      <span 
+      className={ this.getClassBadges()}>{this.formatCount()}</span>
+      <button 
+      onClick = {this.handleIncrement}
+      className="btn btn-secondary btn-sm">Increment</button>
       </div>
       );
   }
 
-  getBadgeClasses() {
+  getClassBadges() {
     let classes = "badge m-2 badge-";
-    //If count = 0, we use a warning badge else, primary badge
-    classes += (this.state.count === 0) ? "warning" : "primary";
-    return classes;
+    classes += this.state.count === 0 ? "warning" : "primary";
+    return classes
   }
 
   formatCount() {
