@@ -14,6 +14,18 @@ class Counters extends Component {
     ],
   };
 
+  handleIncrement = (counter) => {
+    //We can't change components directly, hence the cloning
+    //Clone the state couters
+    const counters = [...this.state.counters];
+    //Get the index of the counter to be increased
+    const index = counters.indexOf(counter);
+    //Clone the counter to be increased
+    counters[index] = { ...counter };
+    counters[index].value++;
+    this.setState({ counters });
+  };
+
   handleDelete = (counterId) => {
     //We don't update the state completely
     //To remove an element from the counters array, we make a new array without the deleted array
@@ -25,9 +37,21 @@ class Counters extends Component {
     this.setState({ counters: counters });
   };
 
+  handleReset = () => {
+    //Get the existing counters and reset each counter's value to 0
+    const counters = this.state.counters.map((c) => {
+      c.value = 0;
+      return c;
+    });
+    this.setState({ counters });
+  };
+
   render() {
     return (
       <div>
+        <button onClick={this.handleReset} className="btn btn-primary m-2">
+          Reset
+        </button>
         {
           //Get the individual counter and map it to the Counter Component
           this.state.counters.map((counter) => (
@@ -36,8 +60,9 @@ class Counters extends Component {
               //Key is used internally by React and hence why we have to create id prop
               key={counter.id}
               onDelete={this.handleDelete}
-              value={counter.value}
-              id={counter.id}
+              onIncrement={this.handleIncrement}
+              //Counter object provides us with the desired props, value and id
+              counter={counter}
             ></Counter>
           ))
         }
